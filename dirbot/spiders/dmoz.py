@@ -6,31 +6,29 @@ from dirbot.items import Website
 
 class DmozSpider(Spider):
     name = "dmoz"
-    allowed_domains = ["dmoz.org"]
+    allowed_domains = ["dmoztools.net"]
     start_urls = [
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/",
+        "http://dmoztools.net/Computers/Programming/Languages/Python/Books/",
+        "http://dmoztools.net/Computers/Programming/Languages/Python/Resources/",
     ]
 
     def parse(self, response):
         """
         The lines below is a spider contract. For more info see:
         http://doc.scrapy.org/en/latest/topics/contracts.html
+        Use the `check` command to run the contract checks.
 
-        @url http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/
+        @url http://dmoztools.net/Computers/Programming/Languages/Python/Resources/
         @scrapes name
         """
-        sites = response.css('#site-list-content > div.site-item > div.title-and-desc')
+        nodes = response.xpath('//div[contains(@class, "site-item")]/div[contains(@class, "title-and-desc")]')
         items = []
 
-        for site in sites:
+        for node in nodes:
             item = Website()
-            item['name'] = site.css(
-                'a > div.site-title::text').extract_first().strip()
-            item['url'] = site.xpath(
-                'a/@href').extract_first().strip()
-            item['description'] = site.css(
-                'div.site-descr::text').extract_first().strip()
+            item['name'] = node.xpath('a/div[contains(@class, "site-title")]/text()').re_first('^[\s\r\n]*(.*[^\s])[\s\r\n]*')
+            item['url'] = node.xpath('a/@href').extract_first()
+            item['description'] = node.xpath('div[contains(@class, "site-descr")]/text()').re_first('^[\s\r\n]*(.*)[\s\r\n]*')
             items.append(item)
 
         return items
