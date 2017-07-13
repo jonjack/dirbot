@@ -12,9 +12,9 @@ This project extracts the URL, Title and Description of the entries on a few pag
 The extracted data looks like this sample:
 
 	{
-		"url": "http://www.brpreiss.com/books/opus7/html/book.html", 
-		"name": "Data Structures and Algorithms with Object-Oriented Design Patterns in Python", 
-		"description": "The primary goal of this book is to promote object-oriented design ..."
+		"url": "http://www.diveintopython.net/", 
+		"name": "Dive Into Python 3", 
+		"description": "By Mark Pilgrim, Guide to Python 3  and its differences from Python 2. ..."
 	}
 
 
